@@ -1,0 +1,15 @@
+version: '3'
+services:
+  influx:
+    build:
+      context: config/influxdb/
+    container_name: influxdb
+    ports:
+      - 8086:8086
+      - 8083:8083
+      - 8090:8090
+    volumes:
+      - influxdb_data:/usr/share/influxdb/data
+volumes:
+  influxdb_data:
+    driver: local
