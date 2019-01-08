@@ -1,6 +1,6 @@
 version: '3'
 services:
-  influx:
+  influxdb:
     build:
       context: config/influxdb/
     container_name: influxdb
@@ -10,6 +10,29 @@ services:
       - 8090:8090
     volumes:
       - influxdb_data:/usr/share/influxdb/data
+  telegraf:
+    build:
+      context: config/telegraf/
+    container_name: telegraf
+    ports:
+      - 8092:8092
+      - 8094:8094
+    depends_on:
+      - influxdb
+  chronograf:
+    build:
+      context: config/chronograf
+    container_name: chronograf
+    ports:
+      - 8888:8888
+    volumes:
+      - chronograf_data:/var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+    depends_on:
+      - influxdb
 volumes:
   influxdb_data:
+    driver: local
+  chronograf_data:
     driver: local
