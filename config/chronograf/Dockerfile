@@ -1,0 +1,2 @@
+ARG INFLUXDB_URL
+FROM chronograf
